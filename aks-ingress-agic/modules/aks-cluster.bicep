@@ -39,7 +39,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2025-03-01' = {
         enabled: true
         config: {
           subnetCIDR: appgwSubnetCIDR
-          name: 'AGICAppGw'  // optional, can let AKS auto-name it
+          name: 'AGICAppGw'
         }
       }
     }
