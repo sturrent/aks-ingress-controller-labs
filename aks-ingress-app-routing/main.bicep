@@ -19,6 +19,7 @@ module aksvnet './modules/aks-vnet.bicep' = {
   scope: clusterrg
   params: {
     location: location
+    subnetName: subnetName
     subnets: [
       {
         name: subnetName
@@ -56,9 +57,6 @@ module roleAuthorization './modules/aks-auth.bicep' = {
 module kubernetes './modules/workloads.bicep' = {
   name: 'buildbicep-deploy'
   scope: clusterrg
-  dependsOn: [
-    akscluster
-  ]
   params: {
     kubeConfig: akscluster.outputs.kubeConfig
   }

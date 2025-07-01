@@ -1,5 +1,6 @@
 param location string
 param vnetName string
+param subnetName string
 param vvnetPreffix array
 param subnets array
 
@@ -14,7 +15,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2024-07-01' = {
   }
 }
 
-var aksSubnetId = resourceId('Microsoft.Network/virtualNetworks/subnets', vnetName, 'aks-subnet')
+var aksSubnetId = resourceId('Microsoft.Network/virtualNetworks/subnets', vnetName, subnetName)
 
 output aksVnetId string = vnet.id
 output akssubnet string = aksSubnetId
