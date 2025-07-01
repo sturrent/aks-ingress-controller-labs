@@ -9,6 +9,9 @@ extension kubernetes with {
 resource coreNamespace_aksStore 'core/Namespace@v1' = {
   metadata: {
     name: 'aks-store'
+    labels: {
+      app: 'aks-store'
+    }
   }
 }
 

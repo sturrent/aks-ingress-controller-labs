@@ -1,6 +1,6 @@
 # aks-ingress-app-routing
 
- This bicep template is to deploy an AKS cluster with the App routing add-on, and some workloads for troubleshooting ingress controller related issues. 
+ This bicep template is to deploy an AKS cluster with the App routing add-on, and some workloads for troubleshooting ingress controller related issues.
 
 Go to the directory, and run:
 

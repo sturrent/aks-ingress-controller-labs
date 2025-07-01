@@ -54,6 +54,14 @@ module roleAuthorization './modules/aks-auth.bicep' = {
   }
 }
 
+module kubernetes1 './modules/namespace.bicep' = {
+  name: 'buildbicep-deploy1'
+  scope: clusterrg
+  params: {
+    kubeConfig: akscluster.outputs.kubeConfig
+  }
+}
+
 module kubernetes './modules/workloads.bicep' = {
   name: 'buildbicep-deploy'
   scope: clusterrg
