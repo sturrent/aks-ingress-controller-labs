@@ -11,5 +11,5 @@ az deployment sub create --name <DEPLOYMENT_NAME> -l <LOCATION> --template-file 
 Note: Currently all files are referencing canadacentral location, but it can be change using params.
 
 ```bash
-az deployment sub create --name aks-egress-lab -l southcentralus --template-file main.bicep --parameters location='southcentralus'
+az deployment sub create --name aks-ingress-app-routing -l southcentralus --template-file main.bicep --parameters location='southcentralus'
 ```

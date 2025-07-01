@@ -1,7 +1,7 @@
 targetScope = 'subscription'
 
 param location string = 'canadacentral'
-param userName string = 'app-routing'
+param userName string = 'agic'
 param resourceName string = 'ingress'
 
 var aksResourceGroupName = 'aks-${resourceName}-${userName}-rg'
@@ -42,6 +42,7 @@ module akscluster './modules/aks-cluster.bicep' = {
     location: location
     clusterName: 'aks-${resourceName}-${userName}'
     aksSubnetId: aksvnet.outputs.akssubnet
+    appgwSubnetCIDR: '10.100.1.0/24'
   }
 }
 
