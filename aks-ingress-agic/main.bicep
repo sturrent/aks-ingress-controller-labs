@@ -8,6 +8,7 @@ var aksResourceGroupName = 'aks-${resourceName}-${userName}-rg'
 var vnetName = 'vnet-${resourceName}-${userName}'
 var subnetName = 'aks-subnet-${resourceName}-${userName}'
 var contributorRoleId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
+var netContributorRoleId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')
 
 resource clusterrg 'Microsoft.Resources/resourceGroups@2025-04-01' = {
   name: aksResourceGroupName
@@ -52,6 +53,15 @@ module roleAuthorization './modules/aks-auth.bicep' = {
   params: {
       principalId: akscluster.outputs.aks_principal_id
       roleDefinition: contributorRoleId
+  }
+}
+
+module appGwRoleAuthorization './modules/agic-auth.bicep' = {
+  name: 'appGwRoleAuthorization'
+  scope: clusterrg
+  params: {
+      principalId: akscluster.outputs.agic_client_id
+      roleDefinition: netContributorRoleId
   }
 }
 

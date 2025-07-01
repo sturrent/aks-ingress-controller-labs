@@ -51,3 +51,5 @@ var config = aks.listClusterAdminCredential().kubeconfigs[0].value
 output aks_principal_id string = aks.identity.principalId
 output controlPlaneFQDN string = aks.properties.fqdn
 output kubeConfig string = config
+output agic_client_id string = aks.properties.addonProfiles.ingressApplicationGateway.identity.clientId
+output appgw_id string = aks.properties.addonProfiles.ingressApplicationGateway.config.effectiveApplicationGatewayId
