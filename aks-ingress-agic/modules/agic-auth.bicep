@@ -3,7 +3,6 @@ param roleDefinition string
 param vnetResourceId string
 
 resource vnet 'Microsoft.Network/virtualNetworks@2024-07-01' existing = {
-  scope: resourceGroup()
   name: last(split(vnetResourceId, '/'))
 }
 
