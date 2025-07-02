@@ -405,7 +405,7 @@ resource networkingK8sIoIngress_storeFront 'networking.k8s.io/Ingress@v1' = {
                   }
                 }
               }
-              path: '/'
+              path: '/home'
               pathType: 'Prefix'
             }
           ]

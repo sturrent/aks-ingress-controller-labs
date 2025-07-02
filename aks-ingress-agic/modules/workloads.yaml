@@ -250,5 +250,5 @@ spec:
             name: store-front
             port:
               number: 80
-        path: /
+        path: /home
         pathType: Prefix
