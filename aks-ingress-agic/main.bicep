@@ -60,7 +60,7 @@ module appGwRoleAuthorization './modules/agic-auth.bicep' = {
   name: 'appGwRoleAuthorization'
   scope: clusterrg
   params: {
-      principalId: akscluster.outputs.agic_client_id
+      principalId: akscluster.outputs.agic_object_id
       roleDefinition: netContributorRoleId
       vnetResourceId: aksvnet.outputs.aksVnetId
   }
