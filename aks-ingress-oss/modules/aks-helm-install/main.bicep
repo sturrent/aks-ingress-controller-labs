@@ -103,7 +103,7 @@ resource runAksCommand 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   ]
   properties: {
     forceUpdateTag: forceUpdateTag
-    azCliVersion: '2.35.0'
+    azCliVersion: '2.75.0'
     timeout: 'PT10M'
     retentionInterval: 'P1D'
     environmentVariables: [
