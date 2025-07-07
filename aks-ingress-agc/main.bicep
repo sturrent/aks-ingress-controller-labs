@@ -47,7 +47,7 @@ module aksvnet './modules/aks-vnet.bicep' = {
     ]
     vnetName: vnetName
     vvnetPreffix:  [
-      '10.100.0.0/16'
+      '10.0.0.0/8'
     ]
   }
 }
