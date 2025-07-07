@@ -81,9 +81,12 @@ module albsetup './modules/alb-setup/main.bicep' = {
     aksVnetId: aksvnet.outputs.aksVnetId
     isCrossTenant: false
   }
+  dependsOn: [
+    akscluster
+  ]
 }
 
-module InstallNginxIngress './modules/aks-helm-install/main.bicep' = {
+module InstallAlbController './modules/aks-helm-install/main.bicep' = {
   name: 'install-alb-controller'
   scope: clusterrg
   params: {
@@ -105,6 +108,9 @@ module kubernetes1 './modules/namespace.bicep' = {
   params: {
     kubeConfig: akscluster.outputs.kubeConfig
   }
+  dependsOn: [
+    InstallAlbController
+  ]
 }
 
 module kubernetes2 './modules/workloads.bicep' = {
@@ -114,4 +120,7 @@ module kubernetes2 './modules/workloads.bicep' = {
     kubeConfig: akscluster.outputs.kubeConfig
     AGC_SUBNET_ID: aksvnet.outputs.subnetIds[1].id // AGC subnet ID
   }
+  dependsOn: [
+    InstallAlbController, kubernetes1
+  ]
 }
