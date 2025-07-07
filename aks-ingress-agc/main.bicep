@@ -9,7 +9,8 @@ param albControllerNamespace string = 'azure-alb-system'
 var aksResourceGroupName = 'aks-${resourceName}-${userName}-rg'
 var vnetName = 'vnet-${resourceName}-${userName}'
 var subnetName = 'aks-subnet-${resourceName}-${userName}'
-var agcSubnetName = 'agc-ingress-subnet'
+var agcSubnetName = '${userName}-${resourceName}-subnet'
+var albIdentityName = 'azure-alb-identity-${userName}'
 var contributorRoleId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
 
 resource clusterrg 'Microsoft.Resources/resourceGroups@2025-04-01' = {
@@ -76,7 +77,7 @@ module albsetup './modules/alb-setup/main.bicep' = {
   params: {
     aksName: 'aks-${resourceName}-${userName}'
     location: location
-    managedIdentityName: 'azure-alb-identity'
+    managedIdentityName: albIdentityName
     aksVnetId: aksvnet.outputs.aksVnetId
     isCrossTenant: false
   }

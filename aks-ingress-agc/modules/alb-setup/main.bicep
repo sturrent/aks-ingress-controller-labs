@@ -49,7 +49,7 @@ resource rbac 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for roleDe
 }]
 
 resource federatedCredential 'Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials@2024-11-30' = {
-  name: 'azure-alb-identity'
+  name: managedIdentityName
   parent: albIdentity
   properties: {
     issuer: oidcIssuerUrl
