@@ -1,5 +1,6 @@
 param location string
 param clusterName string
+param nodeResourceGroupName string
 param aksSubnetId string
 param nodeCount int = 3
 param vmSize string = 'Standard_B4ms'
@@ -17,6 +18,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2025-03-01' = {
   }
   properties: {
     dnsPrefix: clusterName
+    nodeResourceGroup: nodeResourceGroupName
     enableRBAC: true
     agentPoolProfiles: [
       {

@@ -4,17 +4,20 @@ param aksName string
 @description('Azure Kubernetes Service Virtual Network Resource Id')
 param aksVnetId string
 
+@description('Azure Kubernetes Service Virtual Network Resource Id')
+param nodeResourceGroupName string
+
 @description('The location to deploy the resources to')
 param location string
 
 @description('An array of Azure RoleIds that are required for the DeploymentScript resource')
 param rbacRolesNeeded array = [
   'acdd72a7-3385-48ef-bd42-f606fba81ae7' //Reader
+  'fbc52c3f-28ad-4303-a892-8a056630b8f1' //AGC Configuration Manager
 ]
 
 @description('An array of Azure RoleIds that are required for the DeploymentScript resource')
 param albRolesNeeded array = [
-  'fbc52c3f-28ad-4303-a892-8a056630b8f1' //AGC Configuration Manager
   '4d97b98b-1d4f-4787-a291-c67834d212e7' //Network Contributor
 ]
 
@@ -37,16 +40,18 @@ resource albIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2024-11-3
 
 var delegatedManagedIdentityResourceId = albIdentity.id
 
-resource rbac 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for roleDefId in rbacRolesNeeded: {
-  name: guid(aks.id, roleDefId, albIdentity.id)
-  scope: aks
-  properties: {
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roleDefId)
-    principalId: albIdentity.properties.principalId
-    principalType: 'ServicePrincipal'
-    delegatedManagedIdentityResourceId: isCrossTenant ? delegatedManagedIdentityResourceId : null
+module nodeRgRoleAssignments 'alb-auth.bicep' = {
+  name: 'nodeRgRoleAssignments'
+  scope: resourceGroup(nodeResourceGroupName)
+  params: {
+    rbacRolesNeeded: rbacRolesNeeded
+    albIdentityPrincipalId: albIdentity.properties.principalId
+    aksId: aks.id
+    albIdentityId: albIdentity.id
+    isCrossTenant: isCrossTenant
+    delegatedManagedIdentityResourceId: delegatedManagedIdentityResourceId
   }
-}]
+}
 
 resource federatedCredential 'Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials@2024-11-30' = {
   name: managedIdentityName
@@ -69,7 +74,7 @@ resource albRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' 
   scope: vnet
   properties: {
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roleDefId)
-    description: 'Assign agc managed identity required roles on the cluster vnet'
+    description: 'Assign agc managed identity network contributor role on the cluster vnet'
     principalId: albIdentity.properties.principalId
     principalType: 'ServicePrincipal'
   }

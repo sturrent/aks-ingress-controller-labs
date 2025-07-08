@@ -7,6 +7,7 @@ param albHelmNamespace string = 'ingress-agc'
 param albControllerNamespace string = 'azure-alb-system'
 
 var aksResourceGroupName = 'aks-${resourceName}-${userName}-rg'
+var aksNodeResourceGroupName = 'aks-nodes-${resourceName}-${userName}-rg'
 var vnetName = 'vnet-${resourceName}-${userName}'
 var subnetName = 'aks-subnet-${resourceName}-${userName}'
 var agcSubnetName = '${userName}-${resourceName}-subnet'
@@ -59,6 +60,7 @@ module akscluster './modules/aks-cluster.bicep' = {
     location: location
     clusterName: 'aks-${resourceName}-${userName}'
     aksSubnetId: aksvnet.outputs.subnetIds[0].id
+    nodeResourceGroupName: aksNodeResourceGroupName
   }
 }
 
@@ -80,6 +82,7 @@ module albsetup './modules/alb-setup/main.bicep' = {
     managedIdentityName: albIdentityName
     aksVnetId: aksvnet.outputs.aksVnetId
     isCrossTenant: false
+    nodeResourceGroupName: aksNodeResourceGroupName
   }
   dependsOn: [
     akscluster

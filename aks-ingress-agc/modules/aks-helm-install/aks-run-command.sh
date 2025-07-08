@@ -10,7 +10,7 @@ export LANG=C.UTF-8
 if [ "$initialDelay" != "0" ]
 then
     echo "Waiting on RBAC replication ($initialDelay)"
-    sleep $initialDelay
+    sleep "$initialDelay"
 
     #Force RBAC refresh
     az logout
@@ -18,8 +18,8 @@ then
 fi
 
 echo "Sending command to AKS Cluster $aksName in $RG"
-cmdOut=$(az aks command invoke -g $RG -n $aksName  --command "helm upgrade --install ${helmApp} ${helmOciURL} ${helmAppParams}")
-echo $cmdOut
+cmdOut="$(az aks command invoke -g "$RG" -n "$aksName"  --command "helm upgrade --install ${helmApp} ${helmOciURL} ${helmAppParams}")"
+echo "$cmdOut"
 
-jsonOutputString=$cmdOut
-echo $jsonOutputString > $AZ_SCRIPTS_OUTPUT_PATH
+jsonOutputString=$(jq -n --arg output "$cmdOut" '{output: $output}')
+echo "$jsonOutputString" > "$AZ_SCRIPTS_OUTPUT_PATH"
