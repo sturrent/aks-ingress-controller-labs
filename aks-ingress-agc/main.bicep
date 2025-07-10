@@ -7,7 +7,7 @@ param albHelmNamespace string = 'ingress-agc'
 param albControllerNamespace string = 'azure-alb-system'
 
 var aksResourceGroupName = 'aks-${resourceName}-${userName}-rg'
-var aksNodeResourceGroupName = 'aks-nodes-${resourceName}-${userName}-rg'
+var aksNodeResourceGroupName = 'mc-nodes-${resourceName}-${userName}-rg'
 var vnetName = 'vnet-${resourceName}-${userName}'
 var subnetName = 'aks-subnet-${resourceName}-${userName}'
 var agcSubnetName = '${userName}-${resourceName}-subnet'
